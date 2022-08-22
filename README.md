@@ -21,3 +21,14 @@ gcc -o format format.c
 python img2data.py xxxx.jpg a.out
 cat a.out | format > a.c
 ```
+
+Start to send video frame to OLED:
+1. Find the ip address of ESP32
+2. Change the 'HOST' value in `tools/tcp_video_player.py`
+```
+HOST = "192.168.2.7"
+```
+3. Play & send video
+```bash
+./tools/tcp_video_player.py file_to_video.mp4
+```
