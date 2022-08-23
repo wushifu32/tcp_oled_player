@@ -10,9 +10,9 @@ CONFIG_EXAMPLE_WIFI_PASSWORD="bigbrother"
 ```
 
 ### Build
-Add **lvgl** component to esp-idf: [Use LVGL in your ESP-IDF project](https://github.com/lvgl/lv_port_esp32#use-lvgl-in-your-esp-idf-project)
-Add **SDD1306 driver** componet to esp-idf: [Use lvgl_esp32_drivers in your project](https://github.com/lvgl/lv_port_esp32#use-lvgl_esp32_drivers-in-your-project)
-Follow the esp32 idf build instructions
+1. Add **lvgl** component to esp-idf: [Use LVGL in your ESP-IDF project](https://github.com/lvgl/lv_port_esp32#use-lvgl-in-your-esp-idf-project)           
+2. Add **SDD1306 driver** componet to esp-idf: [Use lvgl_esp32_drivers in your project](https://github.com/lvgl/lv_port_esp32#use-lvgl_esp32_drivers-in-your-project)
+3. Follow the esp32 idf build instructions
 
 ### Others
 Transfer a image file into C code array:
