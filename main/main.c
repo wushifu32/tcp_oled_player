@@ -35,7 +35,7 @@
 #define FRAME_SIZE                  (128*64/8)
 #define STREAM_BUF_SIZE             (4*FRAME_SIZE)
 
-const LV_ATTRIBUTE_MEM_ALIGN uint8_t mbin_map[] = {
+const LV_ATTRIBUTE_MEM_ALIGN uint8_t cover_map[] = {
 0xFF,0xFF,0xFF,0xFF,0xFF,0xC0,0x3F,0xFF,0xFF,0xFB,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,\
 0xFF,0xFF,0xFF,0xFF,0xFF,0xE0,0x7F,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,\
 0xFF,0xFF,0xFF,0xFF,0xFF,0xFB,0xFF,0xFF,0xFF,0xFC,0x1F,0xFF,0xFF,0xFF,0xFF,0xFF,\
@@ -109,7 +109,7 @@ lv_img_dsc_t mbin = {
   .header.w = 128,
   .header.h = 64,
   .data_size = FRAME_SIZE,
-  .data = mbin_map,
+  .data = cover_map,
 };
 
 static void lv_tick_task(void *arg);
@@ -119,7 +119,7 @@ static uint8_t frame_buffer[FRAME_SIZE];
 static int frame_cnt;
 StreamBufferHandle_t stream_buf;
 lv_obj_t *frame;
-static int play_start;
+static volatile int play_start;
 
 static void do_retransmit(const int sock)
 {
@@ -291,9 +291,12 @@ static void guiTask(void *pvParameter) {
 
         /* Try to take the semaphore, call lvgl related function on success */
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
-            if (frame_cnt == FRAME_SIZE) {
+            if (play_start && frame_cnt == FRAME_SIZE) {
                  mbin.data = (const uint8_t *)frame_buffer;
                  frame_cnt = 0;
+                 lv_img_set_src(frame, &mbin);
+            } else if (!play_start) {
+                 mbin.data = (const uint8_t *)cover_map;
                  lv_img_set_src(frame, &mbin);
             }
             lv_task_handler();
